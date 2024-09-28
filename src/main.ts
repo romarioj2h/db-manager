@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import naive from "naive-ui";
 
 import './style.css'
 
@@ -8,6 +9,7 @@ import './demos/ipc'
 // import './demos/node'
 
 createApp(App)
+  .use(naive)
   .mount('#app')
   .$nextTick(() => {
     postMessage({ payload: 'removeLoading' }, '*')

@@ -75,6 +75,7 @@ async function createWindow() {
     if (url.startsWith('https:')) shell.openExternal(url)
     return { action: 'deny' }
   })
+  win.maximize()
   // win.webContents.on('will-navigate', (event, url) => { }) #344
 }
 
@@ -117,4 +118,13 @@ ipcMain.handle('open-win', (_, arg) => {
   } else {
     childWindow.loadFile(indexHtml, { hash: arg })
   }
+})
+
+ipcMain.handle('connections/get', async (event) => {
+  // TODO: get connections
+})
+
+ipcMain.handle('connections/add', async (event, connection) => {
+  // TODO: store connection
+  return connection;
 })

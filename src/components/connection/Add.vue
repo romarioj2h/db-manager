@@ -9,14 +9,19 @@ export default defineComponent({
     const connectionsService = new Connections();
     const formRef = ref<FormInst | null>(null)
     const connection = ref({
-      driver: '',
-      url: ''
+      host: '',
+      user: '',
+      password: '',
+      database: '',
     });
     return {
       formRef,
       connection: connection,
       save() {
         connectionsService.add(toRaw(connection.value));
+      },
+      test() {
+        connectionsService.test(toRaw(connection.value));
       }
     }
   }
@@ -24,17 +29,32 @@ export default defineComponent({
 </script>
 
 <template>
-  <n-form ref="formRef" inline :label-width="80" :model="connection">
-    <n-form-item label="Driver" path="driver">
-      <n-input v-model:value="connection.driver" placeholder="Input driver" />
-    </n-form-item>
-    <n-form-item label="URL" path="url">
-      <n-input v-model:value="connection.url" placeholder="Input url" />
-    </n-form-item>
-    <n-button @click="save" type="info">
-      Save
-    </n-button>
-  </n-form>
+  <div>
+    <n-h2>Add connection</n-h2>
+    <n-form ref="formRef" :label-width="80" :model="connection">
+      <n-alert title="Info" type="info" style="margin-bottom: 20px;">
+        Only MySQL is currently supported
+      </n-alert>
+      <n-form-item label="Host" path="host">
+        <n-input v-model:value="connection.host" placeholder="Input host" />
+      </n-form-item>
+      <n-form-item label="User" path="user">
+        <n-input v-model:value="connection.user" placeholder="Input user" />
+      </n-form-item>
+      <n-form-item label="Password" path="password">
+        <n-input v-model:value="connection.password" type="password" placeholder="Input password" />
+      </n-form-item>
+      <n-form-item label="Database" path="database">
+        <n-input v-model:value="connection.database" placeholder="Input database" />
+      </n-form-item>
+      <n-button type="info" @click="test">
+        Test connection
+      </n-button>
+      <n-button @click="save" type="primary" style="float: right;">
+        Save
+      </n-button>
+    </n-form>
+  </div>
 </template>
 
 <style scoped></style>

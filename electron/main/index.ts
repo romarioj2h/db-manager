@@ -3,6 +3,10 @@ import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
+import sqlite3 from 'sqlite3'
+import { Connections } from './services/Connections'
+
+let db;
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -41,6 +45,7 @@ if (!app.requestSingleInstanceLock()) {
 let win: BrowserWindow | null = null
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
+let connectionsService;
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -77,6 +82,7 @@ async function createWindow() {
   })
   win.maximize()
   // win.webContents.on('will-navigate', (event, url) => { }) #344
+  connectionsService = new Connections(win);
 }
 
 app.whenReady().then(createWindow)
@@ -103,6 +109,42 @@ app.on('activate', () => {
   }
 })
 
+app.on('ready', () => {
+  db = new sqlite3.Database('sqlite.db', (err) => {
+    if (err) {
+      console.error("Erro ao abrir o banco de dados:", err.message)
+    } else {
+      console.log("Conexão com o banco de dados aberta.")
+    }
+    // TODO: move database set up
+    // TODO: only supports mysql
+    db.run(`
+      CREATE TABLE IF NOT EXISTS connection (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        host TEXT NOT NULL,
+        user VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        database VARCHAR(255) NOT NULL
+      );
+    `, (err) => {
+      if (err) {
+        return console.error("Erro ao criar a tabela:", err.message);
+      }
+      console.log("Tabela 'connection' criada com sucesso.");
+    });
+  })
+})
+
+app.on('before-quit', () => {
+  db.close((err) => {
+    if (err) {
+      console.error("Erro ao fechar o banco de dados:", err.message)
+    } else {
+      console.log("Conexão com o banco de dados fechada.")
+    }
+  })
+})
+
 // New window example arg: new windows url
 ipcMain.handle('open-win', (_, arg) => {
   const childWindow = new BrowserWindow({
@@ -127,4 +169,8 @@ ipcMain.handle('connections/get', async (event) => {
 ipcMain.handle('connections/add', async (event, connection) => {
   // TODO: store connection
   return connection;
+})
+
+ipcMain.handle('connections/test', (event, connection) => {
+  connectionsService.test(connection)
 })

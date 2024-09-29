@@ -11,4 +11,8 @@ export class Connections {
             console.log(result);
         })
     }
+
+    test(connection: any) {
+        window.ipcRenderer.invoke('connections/test', connection);
+    }
 }

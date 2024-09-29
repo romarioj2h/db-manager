@@ -1,5 +1,12 @@
-<script setup lang="ts">
-import Home from './components/Home.vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
+import AppWrapper from './components/AppWrapper.vue'
+
+export default defineComponent({
+  components: {
+    AppWrapper
+  }
+})
 </script>
 
 <template>
@@ -8,7 +15,7 @@ import Home from './components/Home.vue'
       <n-notification-provider>
         <n-modal-provider>
           <n-dialog-provider>
-            <Home />
+            <AppWrapper />
           </n-dialog-provider>
         </n-modal-provider>
       </n-notification-provider>

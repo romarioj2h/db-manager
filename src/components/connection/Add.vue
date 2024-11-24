@@ -1,6 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref, toRaw } from 'vue'
-import { useDialog, useMessage } from 'naive-ui'
+import { defineComponent, ref, toRaw } from 'vue'
 import type { FormInst } from 'naive-ui'
 import { Connections } from '../../services/Connections'
 

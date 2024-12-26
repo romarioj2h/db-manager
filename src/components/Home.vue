@@ -45,9 +45,6 @@ export default defineComponent({
       },
       addConnection() {
         connectionsService.getAll();
-      },
-      closeModal() {
-
       }
     }
   }

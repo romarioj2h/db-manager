@@ -45,6 +45,9 @@ export default defineComponent({
       },
       addConnection() {
         connectionsService.getAll();
+      },
+      closeModal() {
+
       }
     }
   }
@@ -76,7 +79,7 @@ export default defineComponent({
       </n-layout>
     </n-layout>
     <n-modal v-model:show="showModal" preset="card" style="width: 600px">
-      <Add />
+      <Add @added="showModal = false"/>
     </n-modal>
   </n-layout>
 </template>

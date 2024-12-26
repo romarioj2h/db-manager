@@ -165,10 +165,21 @@ ipcMain.handle('connections/get', async (event) => {
 })
 
 ipcMain.handle('connections/add', async (event, connection) => {
-  connectionsService.add(connection)
-  return connection;
+  if (connectionsService.add(connection)) {
+    win?.webContents.send('notification', {
+      type: 'success',
+      title: 'Successfully added'
+    })
+    return true;
+  }
+  return false;
 })
 
 ipcMain.handle('connections/test', (event, connection) => {
-  connectionsService.test(connection)
+  if (connectionsService.test(connection)) {
+    win?.webContents.send('notification', {
+      type: 'success',
+      title: 'Successfully connected'
+    })
+  }
 })

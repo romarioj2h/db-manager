@@ -1,0 +1,2 @@
+- Improve notification system
+- Reload connection list once new one is added

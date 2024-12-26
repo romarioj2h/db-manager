@@ -4,7 +4,8 @@ import type { FormInst } from 'naive-ui'
 import { Connections } from '../../services/Connections'
 
 export default defineComponent({
-  setup() {
+  emits: ['added'],
+  setup(_, {emit}) {
     const connectionsService = new Connections();
     const formRef = ref<FormInst | null>(null)
     const connection = ref({
@@ -17,7 +18,11 @@ export default defineComponent({
       formRef,
       connection: connection,
       save() {
-        connectionsService.add(toRaw(connection.value));
+        connectionsService.add(toRaw(connection.value)).then(wasAdded => {
+          if (wasAdded) {
+            emit('added');
+          }
+        });
       },
       test() {
         connectionsService.test(toRaw(connection.value));

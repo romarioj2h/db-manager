@@ -6,10 +6,8 @@ export class Connections {
         })
     }
 
-    add(connection: any) {
-        window.ipcRenderer.invoke('connections/add', connection).then(result => {
-            console.log(result);
-        })
+    async add(connection: any): Promise {
+        return await window.ipcRenderer.invoke('connections/add', connection);
     }
 
     test(connection: any) {

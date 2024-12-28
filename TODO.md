@@ -1,2 +1,3 @@
 - Improve notification system
 - Reload connection list once new one is added
+- Move IPC handlers out of index file

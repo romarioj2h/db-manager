@@ -1,6 +1,6 @@
 import {BrowserWindow} from 'electron';
 import mysql from 'mysql2/promise'
-import {Database} from 'sqlite3';
+import {Database, Statement} from 'sqlite3';
 
 export class Connections {
     win: BrowserWindow;
@@ -11,7 +11,7 @@ export class Connections {
         this.db = db;
     }
 
-    async test(connection) {
+    async test(connection): Promise<boolean> {
         try {
             await mysql.createConnection({
                 host: connection.host,
@@ -30,7 +30,7 @@ export class Connections {
         }
     }
 
-    async add(connection) {
+    async add(connection): Promise<boolean> {
         // TODO: notifications are wrong
         if (await this.test(connection)) {
             this.db.run(`INSERT INTO
@@ -40,5 +40,19 @@ export class Connections {
             return true;
         }
         return false;
+    }
+
+    getAll(): Promise {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                'SELECT id, host, user, password, database FROM connection',
+                (err: Error | null, rows: T[]) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve(rows);
+                }
+            )
+        });
     }
 }

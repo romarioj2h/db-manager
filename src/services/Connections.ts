@@ -1,8 +1,10 @@
 export class Connections {
 
     getAll() {
-        window.ipcRenderer.invoke('connections/get').then(result => {
+        window.ipcRenderer.invoke('connections/getAll').then(result => {
             console.log(result);
+        }).catch(error => {
+            console.error(error);
         })
     }
 

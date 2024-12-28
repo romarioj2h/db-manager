@@ -160,8 +160,8 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
-ipcMain.handle('connections/get', async (event) => {
-  // TODO: get connections
+ipcMain.handle('connections/getAll', async (event): Promise => {
+  return connectionsService.getAll();
 })
 
 ipcMain.handle('connections/add', async (event, connection) => {

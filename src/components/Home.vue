@@ -43,7 +43,7 @@ export default defineComponent({
           valueRef.value = panels[Math.min(nameIndex, panels.length - 1)]
         }
       },
-      addConnection() {
+      test() {
         connectionsService.getAll();
       }
     }
@@ -61,6 +61,9 @@ export default defineComponent({
         DBs and Tables
         <n-button @click="showModal = true" type="info">
           Add connection
+        </n-button>
+        <n-button @click="test" type="error">
+          Test
         </n-button>
       </n-layout-sider>
       <n-layout content-style="padding: 24px;">

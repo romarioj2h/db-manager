@@ -5,6 +5,7 @@ import path from 'node:path'
 import os from 'node:os'
 import sqlite3 from 'sqlite3'
 import { Connections } from './services/Connections'
+import {Connection} from "./services/Connection";
 
 let db;
 
@@ -46,6 +47,7 @@ let win: BrowserWindow | null = null
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 let connectionsService;
+let connectionService;
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -107,6 +109,7 @@ async function createWindow() {
     });
   })
   connectionsService = new Connections(win, db);
+  connectionService = new Connection(win, db);
 }
 
 app.whenReady().then(createWindow)
@@ -158,6 +161,10 @@ ipcMain.handle('open-win', (_, arg) => {
   } else {
     childWindow.loadFile(indexHtml, { hash: arg })
   }
+})
+
+ipcMain.handle('connection/getTablesById', async (event, id): Promise => {
+  return connectionService.getTablesById(id);
 })
 
 ipcMain.handle('connections/getAll', async (event): Promise => {

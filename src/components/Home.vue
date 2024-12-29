@@ -4,6 +4,7 @@ import { useDialog, useMessage } from 'naive-ui'
 import { Connections } from '../services/Connections'
 import Add from './connection/Add.vue'
 import List from './connection/List.vue'
+import {Connection} from "../services/Connection";
 
 export default defineComponent({
   components: {
@@ -12,6 +13,7 @@ export default defineComponent({
   },
   setup() {
     const connectionsService = new Connections();
+    const connectionService = new Connection();
     const valueRef = ref(1)
     const panelsRef = ref([1, 2, 3, 4, 5])
     const addableRef = computed(() => {
@@ -46,7 +48,12 @@ export default defineComponent({
         }
       },
       test() {
-        connectionsService.getAll();
+        connectionService.getTables({
+          host: 'sb-1',
+          user: 'phpstorm',
+          password: 'phpstorm',
+          database: 'iats',
+        });
       }
     }
   }

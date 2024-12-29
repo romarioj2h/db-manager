@@ -1,3 +1,6 @@
 - Improve notification system
 - Reload connection list once new one is added
 - Move IPC handlers out of index file
+- Create model class for connection
+- Support for more DB drivers
+- Load tables list in batches

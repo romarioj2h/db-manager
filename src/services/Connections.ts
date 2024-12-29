@@ -1,11 +1,7 @@
 export class Connections {
 
-    getAll() {
-        window.ipcRenderer.invoke('connections/getAll').then(result => {
-            console.log(result);
-        }).catch(error => {
-            console.error(error);
-        })
+    getAll(): Promise<Array> {
+        return window.ipcRenderer.invoke('connections/getAll');
     }
 
     async add(connection: any): Promise {

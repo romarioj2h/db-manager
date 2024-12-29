@@ -88,3 +88,7 @@ code {
     background-color: #f9f9f9;
   }
 }
+
+.n-tree-node-content {
+  text-align: left;
+}

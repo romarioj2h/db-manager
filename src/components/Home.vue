@@ -3,9 +3,11 @@ import { computed, defineComponent, ref } from 'vue'
 import { useDialog, useMessage } from 'naive-ui'
 import { Connections } from '../services/Connections'
 import Add from './connection/Add.vue'
+import List from './connection/List.vue'
 
 export default defineComponent({
   components: {
+    List,
     Add
   },
   setup() {
@@ -65,6 +67,7 @@ export default defineComponent({
         <n-button @click="test" type="error">
           Test
         </n-button>
+        <List></List>
       </n-layout-sider>
       <n-layout content-style="padding: 24px;">
         <n-tabs v-model:value="value" type="card" :addable="addable" :closable="closable" tab-style="min-width: 80px;"

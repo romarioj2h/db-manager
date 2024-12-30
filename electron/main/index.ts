@@ -182,8 +182,8 @@ ipcMain.handle('connections/add', async (event, connection) => {
   return false;
 })
 
-ipcMain.handle('connections/test', (event, connection) => {
-  if (connectionsService.test(connection)) {
+ipcMain.handle('connections/test', async (event, connection) => {
+  if (await connectionsService.test(connection)) {
     win?.webContents.send('notification', {
       type: 'success',
       title: 'Successfully connected'

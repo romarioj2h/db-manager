@@ -3,7 +3,6 @@ import {Connections} from "./Connections";
 import {BrowserWindow} from "electron";
 import {Database} from "sqlite3";
 
-// FIXME: This class is not working as a service, but a dao, please create a new layer
 export class Connection {
 
     constructor(win: BrowserWindow, db: Database) {

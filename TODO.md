@@ -4,3 +4,4 @@
 - Create model class for connection
 - Support for more DB drivers
 - Load tables list in batches
+- Add refresh tables list for a connection

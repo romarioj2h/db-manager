@@ -1,6 +1,6 @@
 import {BrowserWindow} from 'electron';
 import mysql from 'mysql2/promise'
-import {Database, Statement} from 'sqlite3';
+import {Database} from 'sqlite3';
 
 export class Connections {
     win: BrowserWindow;

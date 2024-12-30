@@ -109,7 +109,7 @@ async function createWindow() {
     });
   })
   connectionsService = new Connections(win, db);
-  connectionService = new Connection(win, db);
+  connectionService = new Connection(connectionsService);
 }
 
 app.whenReady().then(createWindow)

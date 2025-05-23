@@ -1,9 +1,15 @@
 export class Connections {
 
     getAll() {
-        window.ipcRenderer.invoke('connections/get').then(result => {
-            console.log(result);
-        })
+        return new Promise((resolve, reject) => {
+            window.ipcRenderer.invoke('connections/get')
+                .then(result => {
+                    resolve(result);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
     }
 
     add(connection: any) {

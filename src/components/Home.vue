@@ -1,15 +1,18 @@
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, onMounted } from 'vue'
 import { useDialog, useMessage } from 'naive-ui'
 import { Connections } from '../services/Connections'
 import Add from './connection/Add.vue'
+import ConnectionList from './connection/ConnectionList.vue'
 
 export default defineComponent({
   components: {
-    Add
+    Add,
+    ConnectionList
   },
   setup() {
     const connectionsService = new Connections();
+    const connections = ref([]);
     const valueRef = ref(1)
     const panelsRef = ref([1, 2, 3, 4, 5])
     const addableRef = computed(() => {
@@ -22,12 +25,28 @@ export default defineComponent({
     })
     const message = useMessage()
     const dialog = useDialog()
+
+    onMounted(async () => {
+      try {
+        const result = await connectionsService.getAll();
+        if (result) {
+          connections.value = result;
+        } else {
+          connections.value = [];
+        }
+      } catch (error) {
+        console.error("Failed to fetch connections:", error);
+        connections.value = []; 
+      }
+    });
+
     return {
       value: valueRef,
       panels: panelsRef,
       addable: addableRef,
       closable: closableRef,
       showModal: ref(false),
+      connections,
       handleAdd() {
         const newValue = Math.max(...panelsRef.value) + 1
         panelsRef.value.push(newValue)
@@ -44,7 +63,9 @@ export default defineComponent({
         }
       },
       addConnection() {
-        connectionsService.getAll();
+        // This method might need to be updated to refresh the list,
+        // or the Add component should emit an event to trigger a refresh.
+        connectionsService.getAll(); 
       }
     }
   }
@@ -62,6 +83,7 @@ export default defineComponent({
         <n-button @click="showModal = true" type="info">
           Add connection
         </n-button>
+        <ConnectionList :connections="connections" />
       </n-layout-sider>
       <n-layout content-style="padding: 24px;">
         <n-tabs v-model:value="value" type="card" :addable="addable" :closable="closable" tab-style="min-width: 80px;"

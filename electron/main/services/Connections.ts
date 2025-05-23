@@ -40,4 +40,26 @@ export class Connections {
             this.db.run(`insert into connection (host, user, password, database) values ('${connection.host}', '${connection.user}', '${connection.password}', '${connection.database}')`);
         }
     }
+
+    async getAll() {
+        try {
+            this.db.all('SELECT * FROM connection', (err, rows) => {
+                if (err) {
+                    this.win?.webContents.send('notification', {
+                        type: 'error',
+                        title: 'Error fetching connections',
+                        message: err.message,
+                    });
+                } else {
+                    this.win?.webContents.send('connections/get', rows);
+                }
+            });
+        } catch (error) {
+            this.win?.webContents.send('notification', {
+                type: 'error',
+                title: 'Error fetching connections',
+                message: error.message,
+            });
+        }
+    }
 }

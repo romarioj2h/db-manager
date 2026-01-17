@@ -16,8 +16,7 @@ export class Connection {
             const [results,] = await dbConnection.query('show tables');
             return results.map(table => table.Tables_in_iats);
         } catch (error) {
-            console.error(error);
-            // TODO: notification
+            reject({error: error.message});
         }
     }
 }

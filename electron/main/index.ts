@@ -164,7 +164,12 @@ ipcMain.handle('open-win', (_, arg) => {
 })
 
 ipcMain.handle('connection/getTablesById', async (event, id): Promise => {
-  return connectionService.getTablesById(id);
+  return await connectionService.getTablesById(id).catch((error) => {
+    win?.webContents.send('notification', {
+      type: 'error',
+      message: error.message
+    })
+  })
 })
 
 ipcMain.handle('connections/getAll', async (event): Promise => {
@@ -175,7 +180,7 @@ ipcMain.handle('connections/add', async (event, connection) => {
   if (connectionsService.add(connection)) {
     win?.webContents.send('notification', {
       type: 'success',
-      title: 'Successfully added'
+      message: 'Successfully added'
     })
     return true;
   }
@@ -186,7 +191,7 @@ ipcMain.handle('connections/test', async (event, connection) => {
   if (await connectionsService.test(connection)) {
     win?.webContents.send('notification', {
       type: 'success',
-      title: 'Successfully connected'
+      message: 'Successfully connected'
     })
   }
 })

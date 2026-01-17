@@ -5,7 +5,7 @@ import path from 'node:path'
 import os from 'node:os'
 import sqlite3 from 'sqlite3'
 import { Connections } from './dao/Connections'
-import {Connection} from "./dao/Connection";
+import { Connection } from "./dao/Connection";
 
 let db;
 

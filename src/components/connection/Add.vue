@@ -2,11 +2,15 @@
 import { defineComponent, ref, toRaw } from 'vue'
 import type { FormInst } from 'naive-ui'
 import { Connections } from '../../services/Connections'
+import {createNotifier} from "../../services/Notify";
+import {useNotification} from "naive-ui";
 
 export default defineComponent({
   emits: ['added'],
   setup(_, {emit}) {
     const connectionsService = new Connections();
+    const notification = useNotification();
+    const notifier = createNotifier(notification);
     const formRef = ref<FormInst | null>(null)
     const connection = ref({
       host: '',
@@ -20,6 +24,7 @@ export default defineComponent({
       save() {
         connectionsService.add(toRaw(connection.value)).then(wasAdded => {
           if (wasAdded) {
+            notifier.notify('Successfully added', 'success')
             emit('added');
           }
         });

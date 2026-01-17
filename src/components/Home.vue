@@ -1,10 +1,10 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { useDialog, useMessage } from 'naive-ui'
-import { Connections } from '../services/Connections'
 import Add from './connection/Add.vue'
 import List from './connection/List.vue'
 import {Connection} from "../services/Connection";
+import {createNotifier} from "../services/Notify";
+import {useNotification} from "naive-ui";
 
 export default defineComponent({
   components: {
@@ -12,8 +12,9 @@ export default defineComponent({
     Add
   },
   setup() {
-    const connectionsService = new Connections();
     const connectionService = new Connection();
+    const notification = useNotification();
+    const notifier = createNotifier(notification);
     const valueRef = ref(1)
     const panelsRef = ref([1, 2, 3, 4, 5])
     const addableRef = computed(() => {
@@ -24,8 +25,6 @@ export default defineComponent({
     const closableRef = computed(() => {
       return panelsRef.value.length > 1
     })
-    const message = useMessage()
-    const dialog = useDialog()
     return {
       value: valueRef,
       panels: panelsRef,
@@ -48,12 +47,7 @@ export default defineComponent({
         }
       },
       test() {
-        connectionService.getTables({
-          host: 'sb-1',
-          user: 'phpstorm',
-          password: 'phpstorm',
-          database: 'iats',
-        });
+        notifier.notify('Successfully added', 'success')
       }
     }
   }
@@ -94,8 +88,4 @@ export default defineComponent({
   </n-layout>
 </template>
 
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>
+<style scoped></style>

@@ -163,6 +163,7 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
+// TODO: Remove all notifications from main process
 ipcMain.handle('connection/getTablesById', async (event, id): Promise => {
   return await connectionService.getTablesById(id).catch((error) => {
     win?.webContents.send('notification', {
@@ -178,10 +179,6 @@ ipcMain.handle('connections/getAll', async (event): Promise => {
 
 ipcMain.handle('connections/add', async (event, connection) => {
   if (connectionsService.add(connection)) {
-    win?.webContents.send('notification', {
-      type: 'success',
-      message: 'Successfully added'
-    })
     return true;
   }
   return false;

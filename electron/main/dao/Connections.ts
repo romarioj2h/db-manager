@@ -31,7 +31,6 @@ export class Connections {
     }
 
     async add(connection): Promise<boolean> {
-        // TODO: notifications are wrong
         if (await this.test(connection)) {
             this.db.run(`INSERT INTO
                  connection (host, user, password, database)

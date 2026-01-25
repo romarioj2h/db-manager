@@ -164,7 +164,6 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
-// TODO: Remove all notifications from main process
 ipcMain.handle('connection/getTablesById', async (event, id) => {
   try {
     return SuccessResponse(await connectionService.getTablesById(id));

@@ -6,6 +6,7 @@ import os from 'node:os'
 import sqlite3 from 'sqlite3'
 import { Connections } from './dao/Connections'
 import { Connection } from "./dao/Connection";
+import { ErrorResponse, SuccessResponse } from './dto/Response'
 
 let db;
 
@@ -185,10 +186,10 @@ ipcMain.handle('connections/add', async (event, connection) => {
 })
 
 ipcMain.handle('connections/test', async (event, connection) => {
-  if (await connectionsService.test(connection)) {
-    win?.webContents.send('notification', {
-      type: 'success',
-      message: 'Successfully connected'
-    })
+  try {
+    await connectionsService.test(connection);
+    return SuccessResponse('Connection successful');
+  } catch (error) {
+    return ErrorResponse(error.message);
   }
 })

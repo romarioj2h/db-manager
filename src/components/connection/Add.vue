@@ -30,7 +30,16 @@ export default defineComponent({
         });
       },
       test() {
-        connectionsService.test(toRaw(connection.value));
+        // TODO: make this generic for other types of services
+        connectionsService.test(toRaw(connection.value)).then((response) => {
+          if (response.type === 'error') {
+            notifier.notify(response.message, 'error');
+            return;
+          }
+          notifier.notify('Successfully connected', 'success')
+        }).catch((error) => {
+          notifier.notify(error.message, 'error')
+        });
       }
     }
   }

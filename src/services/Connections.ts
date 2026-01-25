@@ -8,7 +8,7 @@ export class Connections {
         return await window.ipcRenderer.invoke('connections/add', connection);
     }
 
-    test(connection: any) {
-        window.ipcRenderer.invoke('connections/test', connection);
+    async test(connection: any): Promise<boolean> {
+        return await window.ipcRenderer.invoke('connections/test', connection);
     }
 }

@@ -12,22 +12,13 @@ export class Connections {
     }
 
     async test(connection): Promise<boolean> {
-        try {
-            await mysql.createConnection({
-                host: connection.host,
-                user: connection.user,
-                password: connection.password,
-                database: connection.database
-            });
-            return true;
-        } catch (error) {
-            this.win?.webContents.send('notification', {
-                type: 'warning',
-                title: 'Failed to connect',
-                message: error.message
-            })
-            return false;
-        }
+        await mysql.createConnection({
+            host: connection.host,
+            user: connection.user,
+            password: connection.password,
+            database: connection.database
+        });
+        return true;
     }
 
     async add(connection): Promise<boolean> {

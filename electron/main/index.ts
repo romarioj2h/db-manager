@@ -164,7 +164,7 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
-ipcMain.handle('connection/getTablesById', async (event, id): Response => {
+ipcMain.handle('connection/getTablesById', async (event, id): Promise<Response> => {
   try {
     return SuccessResponse(await connectionService.getTablesById(id));
   } catch (error) {
@@ -172,11 +172,11 @@ ipcMain.handle('connection/getTablesById', async (event, id): Response => {
   }
 })
 
-ipcMain.handle('connections/getAll', async (event): Promise => {
-  return connectionsService.getAll();
+ipcMain.handle('connections/getAll', async (event): Promise<Response> => {
+  return SuccessResponse(await connectionsService.getAll());
 })
 
-ipcMain.handle('connections/add', async (event, connection): Response => {
+ipcMain.handle('connections/add', async (event, connection): Promise<Response> => {
   try {
     await connectionsService.add(connection);
     return SuccessResponse('Connection successful created');
@@ -185,7 +185,7 @@ ipcMain.handle('connections/add', async (event, connection): Response => {
   }
 })
 
-ipcMain.handle('connections/test', async (event, connection): Response => {
+ipcMain.handle('connections/test', async (event, connection): Promise<Response> => {
   try {
     await connectionsService.test(connection);
     return SuccessResponse('Successfully connected');

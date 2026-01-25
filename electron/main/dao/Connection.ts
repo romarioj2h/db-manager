@@ -9,7 +9,7 @@ export class Connection {
         this.connections = connections;
     }
 
-    async getTablesById(id): Promise<Array<string>> {
+    async getTablesById(id: number): Promise<Array<string>> {
         const connection = await this.connections.getById(id);
         const dbConnection = await mysql.createConnection(connection);
         const [results,] = await dbConnection.query('show tables');

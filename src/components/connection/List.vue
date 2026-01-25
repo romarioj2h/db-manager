@@ -14,7 +14,7 @@ export default defineComponent({
     const notification = useNotification();
     const notifier = createNotifier(notification);
     connectionsService.getAll().then(getAllResult => {
-      connections.value = getAllResult.map(connection => {
+      connections.value = getAllResult.message.map(connection => {
         return {
           label: connection.host + ' - ' + connection.database,
           key: connection.id,

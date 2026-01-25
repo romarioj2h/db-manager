@@ -179,16 +179,18 @@ ipcMain.handle('connections/getAll', async (event): Promise => {
 })
 
 ipcMain.handle('connections/add', async (event, connection) => {
-  if (connectionsService.add(connection)) {
-    return true;
+  try {
+    await connectionsService.add(connection);
+    return SuccessResponse('Connection successful created');
+  } catch (error) {
+    return ErrorResponse(error.message);
   }
-  return false;
 })
 
 ipcMain.handle('connections/test', async (event, connection) => {
   try {
     await connectionsService.test(connection);
-    return SuccessResponse('Connection successful');
+    return SuccessResponse('Successfully connected');
   } catch (error) {
     return ErrorResponse(error.message);
   }

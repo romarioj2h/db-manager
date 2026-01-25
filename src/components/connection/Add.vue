@@ -22,21 +22,19 @@ export default defineComponent({
       formRef,
       connection: connection,
       save() {
-        connectionsService.add(toRaw(connection.value)).then(wasAdded => {
-          if (wasAdded) {
-            notifier.notify('Successfully added', 'success')
+        connectionsService.add(toRaw(connection.value)).then(response => {
+          if (response.type === 'success') {
             emit('added');
           }
+          notifier.notify(response.message, response.type);
+        }).catch((error) => {
+          notifier.notify(error.message, 'error')
         });
       },
       test() {
         // TODO: make this generic for other types of services
         connectionsService.test(toRaw(connection.value)).then((response) => {
-          if (response.type === 'error') {
-            notifier.notify(response.message, 'error');
-            return;
-          }
-          notifier.notify('Successfully connected', 'success')
+          notifier.notify(response.message, response.type)
         }).catch((error) => {
           notifier.notify(error.message, 'error')
         });

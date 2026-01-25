@@ -6,7 +6,7 @@ import os from 'node:os'
 import sqlite3 from 'sqlite3'
 import { Connections } from './dao/Connections'
 import { Connection } from "./dao/Connection";
-import { ErrorResponse, SuccessResponse } from './dto/Response'
+import { ErrorResponse, SuccessResponse, Response } from './dto/Response'
 
 let db;
 
@@ -164,7 +164,7 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
-ipcMain.handle('connection/getTablesById', async (event, id) => {
+ipcMain.handle('connection/getTablesById', async (event, id): Response => {
   try {
     return SuccessResponse(await connectionService.getTablesById(id));
   } catch (error) {
@@ -176,7 +176,7 @@ ipcMain.handle('connections/getAll', async (event): Promise => {
   return connectionsService.getAll();
 })
 
-ipcMain.handle('connections/add', async (event, connection) => {
+ipcMain.handle('connections/add', async (event, connection): Response => {
   try {
     await connectionsService.add(connection);
     return SuccessResponse('Connection successful created');
@@ -185,7 +185,7 @@ ipcMain.handle('connections/add', async (event, connection) => {
   }
 })
 
-ipcMain.handle('connections/test', async (event, connection) => {
+ipcMain.handle('connections/test', async (event, connection): Response => {
   try {
     await connectionsService.test(connection);
     return SuccessResponse('Successfully connected');

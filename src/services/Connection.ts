@@ -4,7 +4,7 @@ export class Connection {
         return window.ipcRenderer.invoke('connection/getTables', connection);
     }
 
-    getTablesById(id): Promise<Array<string>> {
-        return window.ipcRenderer.invoke('connection/getTablesById', id);
+    async getTablesById(id): Promise<Array<string>> {
+        return await window.ipcRenderer.invoke('connection/getTablesById', id);
     }
 }

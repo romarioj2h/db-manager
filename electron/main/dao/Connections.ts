@@ -52,7 +52,7 @@ export class Connections {
                 'SELECT id, host, user, password, database FROM connection WHERE id = ' + id,
                 (err: Error | null, row: T) => {
                     if (err) {
-                        reject(err);
+                        reject(new Error('Connection not found'));
                     }
                     resolve(row);
                 }

@@ -12,11 +12,7 @@ export class Connection {
     async getTablesById(id): Promise<Array<string>> {
         const connection = await this.connections.getById(id);
         const dbConnection = await mysql.createConnection(connection);
-        try {
-            const [results,] = await dbConnection.query('show tables');
-            return results.map(table => table.Tables_in_iats);
-        } catch (error) {
-            reject({error: error.message});
-        }
+        const [results,] = await dbConnection.query('show tables');
+        return results.map(table => table.Tables_in_iats);
     }
 }
